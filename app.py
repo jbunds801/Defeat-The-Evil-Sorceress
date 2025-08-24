@@ -1,6 +1,10 @@
 from classes import EvilSorceress
 from actions import show_instructions, get_input, create_character, view_stats, battle
 
+"""fix the block function. right now it isn't blocking anything because it comes before the attack, but stll causing damage"""
+"""make it so they can't use the special ability if their health is too low"""
+"""make it so they can only heal every 3rd turn"""
+
 
 def main():
     while True:

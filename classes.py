@@ -29,12 +29,12 @@ class Character:
             variance = random.uniform(0.9, 1.1)
             damage = int(self.attack_power * multiplier * variance)
             opponent.health -= damage
-            print(message.format(user=self.name, opponent=opponent.name, damage=damage))
+            print("\n" + message.format(user=self.name, opponent=opponent.name, damage=damage))
 
         if self.ability_cost:
             self.health -= self.ability_cost
             print(
-                f"{self.name} spent {self.ability_cost} health to use {ability_name}!"
+                f"{self.name} spent {self.ability_cost} health to use {ability_name}"
             )
 
 
@@ -54,7 +54,7 @@ class EvilSorceress(Character):
 
     def regenerate(self):
         self.health = min(self.health + 8, self.max_health)
-        print(f"{self.name} regenerates 8 health!\n")
+        print(f"{self.name} regenerates 8 health!")
 
 
 class Warrior(Character):
