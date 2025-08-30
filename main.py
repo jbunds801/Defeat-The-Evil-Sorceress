@@ -1,6 +1,7 @@
 import random
 import sys
 
+# outside of classes so it can be changed at anytime to update dynamically
 heal_percent = 0.50
 
 
@@ -23,8 +24,8 @@ class Character:
         self.ability_cost = ability_cost
         self.block_ability = block_ability
         self.block_strength = block_strength
-        self.is_blocking = False
-        self.next_heal_turn = 1
+        self.is_blocking = False  # ensures block happens after opponent attacks
+        self.next_heal_turn = 1  # implements turn counter for heal
 
     def attack(self, opponent):
         damage = int(self.attack_power * random.uniform(0.85, 1.15))
@@ -34,7 +35,7 @@ class Character:
     def use_special_ability(self, opponent):
         ability_name, multiplier, message = self.special_ability
 
-        # prevent special ability if health is too low
+        # prevent special ability use if health is too low
         if self.ability_cost and self.health <= self.ability_cost:
             print(
                 f"\n{self.name} is too weak to use {ability_name}! (Needs more health) Choose again"
@@ -53,6 +54,7 @@ class Character:
 
         return True
 
+    # methods to implement turn counting for heal cooldown
     def heal(self, current_turn, cooldown=5):
         if current_turn >= self.next_heal_turn:
             amount = int(self.max_health * heal_percent)
@@ -86,6 +88,7 @@ class Character:
         if self.health < 0:
             self.health = 0
 
+    # statement used to see stats after each turn
     def check_health(self):
         print(f"{self.name} Health: {self.health}/{self.max_health}")
 
@@ -204,6 +207,7 @@ def show_instructions():
     print("2. View Character Stats\n")
 
 
+# implemented so player can quit game at any time
 def get_input(prompt):
     user_input = input(prompt).strip().lower()
     if user_input == "quit":
@@ -251,6 +255,8 @@ def view_stats():
         Rogue("Rogue"),
         Summoner("Summoner"),
     ]
+
+    # prints out each character classes stats. uses template literals for future class additions
     print("\n----- Character Stats -----\n")
     for char in characters:
         if char.special_ability:
@@ -275,6 +281,7 @@ def view_stats():
     return create_character()
 
 
+# wrapper for check_health
 def show_health_stats(*characters):
     for char in characters:
         char.check_health()
@@ -283,10 +290,12 @@ def show_health_stats(*characters):
 def battle(player, sorceress):
     print("\nYou will face off with the Evil Sorceress alone!")
 
+    # sets turn counter for heal cooldown
     turn_counter = 1
 
     while sorceress.health > 0 and player.health > 0:
 
+        # shows if player can heal or not in line 307
         heal_text = (
             "(available)"
             if player.next_heal_turn <= turn_counter
@@ -352,7 +361,6 @@ def main():
                 break
             else:
                 print("Invalid choice, please try again.")
-                # continue
 
         print("\n" + "-" * 40)
         print(f"\nWelcome {player.name} the {player.__class__.__name__}!")
