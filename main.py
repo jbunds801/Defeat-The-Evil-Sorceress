@@ -1,7 +1,7 @@
 import random
 import sys
 
-heal_percent = 0.40
+heal_percent = 0.50
 
 
 class Character:
@@ -32,10 +32,6 @@ class Character:
         opponent.take_damage(damage)
 
     def use_special_ability(self, opponent):
-        if not self.special_ability:
-            print(f"{self.name} has no special ability!")
-            return False
-
         ability_name, multiplier, message = self.special_ability
 
         # prevent special ability if health is too low
@@ -103,7 +99,7 @@ class EvilSorceress(Character):
             special_ability=(
                 "Dark Blast",
                 1.75,
-                "{user} unleashes a DARK BLAST! {opponent} takes {damage} damage!",
+                "{user} unleashes a DARK BLAST! for {damage} damage!",
             ),
         )
 
@@ -322,7 +318,7 @@ def battle(player, sorceress):
 
         # Sorceress's turn
         if sorceress.health > 0:
-            if random.random() < 0.10:
+            if random.random() < 0.15:
                 sorceress.use_special_ability(player)
             else:
                 sorceress.attack(player)
