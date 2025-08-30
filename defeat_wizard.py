@@ -48,6 +48,10 @@ def view_stats():
     return create_character()
 
 
+def check_health(self):
+    print(f"Current Health: {self.health}/{self.max_health}")
+
+
 class Character:
     def __init__(
         self, name, health, attack_power, special_ability=None, ability_cost=None
@@ -71,13 +75,10 @@ class Character:
             damage = int(self.attack_power * multiplier)
             opponent.health -= damage
             print(message.format(user=self.name, opponent=opponent.name, damage=damage))
-            self.ability_cost -= self.health
-            print(f"{self.name} loses points")
-
-    def check_stats(self):
-        print(
-            f"{self.name}'s Current Stats - Health: {self.health}/{self.max_health}, Attack Power: {self.attack_power}"
-        )
+            self.health -= self.ability_cost
+            print(
+                f"{self.name} spent {self.ability_cost} health to use {ability_name}!"
+            )
 
 
 class EvilSorceress(Character):
@@ -98,7 +99,8 @@ class EvilSorceress(Character):
 
     def regenerate(self):
         self.health += 5
-        print(f"{self.name} regenerates 5 health! Current health: {self.health}")
+        print(f"{self.name} regenerates 5 health!")
+        check_health(self)
 
 
 class Warrior(Character):
@@ -210,7 +212,7 @@ def battle(player, sorceress):
         print("'A'. Attack")
         print("'S'. Use Special Ability")
         print("'H'. Heal")
-        # print("'C'. Check Stats\n")
+        print("'C'. Check Health")
 
         choice = input("\nChoose an action: ").strip().lower()
 
@@ -218,12 +220,12 @@ def battle(player, sorceress):
             player.attack(sorceress)
         elif choice == "s":
             player.use_special_ability(sorceress)
+            check_health(player)
         elif choice == "h":
             pass  # Implement heal method
-
-            """ elif choice == "c":
-            player.check_stats() """
-            """check stats should not cause the oppenent to take a turn"""
+        elif choice == "c":
+            check_health(player)
+        # make this so it doesn't take damage away from the player
 
         else:
             print("Invalid choice. Try again.")
